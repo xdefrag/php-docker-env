@@ -1,0 +1,17 @@
+version: '2.1'
+
+services:
+
+  api:
+    build: ./api
+    ports:
+      - "80:80"
+    volumes:
+      - "./api/src:/var/www/api-data"
+      - "./api-arts:/var/arts"
+    network_mode: "host"
+    healthcheck:
+      test: curl -f http://0.0.0.0
+      interval: 5s
+      timeout: 2s
+      retries: 999
