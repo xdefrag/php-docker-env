@@ -10,7 +10,7 @@ RUN sed -i -e 's/v[[:digit:]]\.[[:digit:]]/edge/g' /etc/apk/repositories && \
     php7-zlib php7-mbstring php7-simplexml php7-tokenizer php7-xmlwriter \
     php7-dom php7-xml php7-xsl php7-fileinfo php7-pdo php7-pdo_sqlite php7-pdo_pgsql \
     php7-zip php7-session php7-ctype php7-gd php7-bcmath php7-amqp php7-curl php7-xdebug \
-    sqlite curl curl-dev nginx
+    sqlite curl curl-dev nginx the_silver_searcher
 
 RUN rm /usr/bin/iconv && \
     curl -SL http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz | tar -xz -C . && \
@@ -28,7 +28,10 @@ ENV LD_PRELOAD /usr/local/lib/preloadable_libiconv.so
 RUN apk del --purge gcc libc-dev make libtool
 
 RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer
+    mv composer.phar /usr/local/bin/composer && \
+    composer global require "friendsofphp/php-cs-fixer"
+
+ENV PATH="/root/.composer/vendor/bin:${PATH}"    
 
 RUN sed -i -e 's/127.0.0.1/0.0.0.0/g' /etc/php7/php-fpm.d/www.conf && \
     sed -i -e 's/nobody/www/g' /etc/php7/php-fpm.d/www.conf && \
